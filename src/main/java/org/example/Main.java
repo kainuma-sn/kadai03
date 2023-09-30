@@ -36,7 +36,7 @@ public class Main {
         drum.printMap("SUPERIOR DRUMMER 3");
         drum.printMap("BFD 3");
         drum.printMap("MODO DRUM 1.5");
-        drum.printMap("SUPERIOR DRUMMER 3");
+        drum.printMap("EZ Drummer 3");
 
         // 依存性の注入
         PurchaceService purchaceService = new PayService();
