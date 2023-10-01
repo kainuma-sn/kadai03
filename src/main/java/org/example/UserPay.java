@@ -11,6 +11,6 @@ public class UserPay {
     public void sendMessage(String message) {
         purchaceService.payProduct(message);
         // メッセージを出力
-        System.out.println("購入が完了しました" + message);
+        System.out.println("購入を開始します" + message);
     }
 }

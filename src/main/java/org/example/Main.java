@@ -7,43 +7,37 @@ public class Main {
         Instruments drum = new Instruments();
 
         //リストを追加する
-        drum.addList("SUPERIOR DRUMMER 3", 49500, 50);
-        drum.addList("BFD 3", 35799, 37);
-        drum.addList("MODO DRUM 1.5", 30990, 25);
-        drum.addList("", 0, 0);
-        drum.addList(null, 1, 1);
-
-        //製品名にnull又は空白を含むデータを検出する
-        drum.chekedList();
-
-        //指定したリストを削除する
-        drum.deleteList(4);
-        drum.deleteList(3);
+        //製品名にnull又は空白を含むデータを検出された場合、エラーを返す
+        drum.addInstrumentList("SUPERIOR DRUMMER 3", 49500, 50);
+        drum.addInstrumentList("BFD 3", 35799, 37);
+        drum.addInstrumentList("MODO DRUM 1.5", 30990, 25);
+        drum.addInstrumentList("", 0, 0);
+        drum.addInstrumentList(null, 1, 1);
+        drum.addInstrumentList("TOKYO SCORING DRUM KITS", 44671, 0);
 
         //リストを出力する
-        drum.allPrintList();
+        drum.printAllInstrumentsInfo();
+
+        //指定したリストを削除する
+        drum.deleteInstrumentList(3);
 
         //指定したリストを変更する
-        drum.updateList(1, "EZ Drummer 3", 22000, 100);
+        drum.updateInstrumentList(1, "EZ Drummer 3", 22000, 100);
 
         //指定したリストを出力する
-        drum.printList(1);
+        drum.printInstrumentInfo(1);
 
         //drumインスタンスの全リストからMapを生成する
-        drum.createMap();
+        drum.createInstrumentsMap();
 
         //検索したキーに該当するデータを出力する
-        drum.printMap("SUPERIOR DRUMMER 3");
-        drum.printMap("BFD 3");
-        drum.printMap("MODO DRUM 1.5");
-        drum.printMap("EZ Drummer 3");
+        drum.searchInstrumentMap("SUPERIOR DRUMMER 3");
+        drum.searchInstrumentMap("BFD 3");
+        drum.searchInstrumentMap("MODO DRUM 1.5");
+        drum.searchInstrumentMap("EZ Drummer 3");
+        drum.searchInstrumentMap("TOKYO SCORING DRUM KITS");
 
-        // 依存性の注入
-        PurchaceService purchaceService = new PayService();
-        UserPay userPay = new UserPay(purchaceService);
-
-        // メッセージを送信
-        userPay.sendMessage("test");
-
+        //メッセージを送信する
+        drum.payInstruments();
     }
 }
