@@ -13,89 +13,92 @@ public class Instruments {
     public Instruments() {
     }
 
-    //ArrayListを使用し、VstPluginクラスのインスタンスを格納するためのリスト型のlistを作成する
-    private List<VstPlugin> list = new ArrayList<>();
-    //HashMapを使用し、キーのStringとListのInteger型のmapを作成する
-    private Map<String, List<Integer>> drumMap = new HashMap<>();
+    //ArrayListを使用し、VstPluginCatalogクラスのインスタンスを格納するためのリスト型のinstrumentsListを作成する
+    private final List<VstPluginCatalog> instrumentsList = new ArrayList<>();
+    //HashMapを使用し、キーのStringとListのInteger型のmap型のinstrumentsMapを作成する
+    private final Map<String, List<Integer>> instrumentsMap = new HashMap<>();
 
-    //listに新たなVstPluginインスタンスを追加する
-    public void addList(String value1, int value2, int value3) {
-        list.add(new VstPlugin(value1, value2, value3));
-        System.out.println(value1 + "　の製品登録が完了しました");
-        System.out.println("--------------");
+    //instrumentsListに新たなVstPluginCatalogインスタンスを追加する
+    public void addInstrumentList(String productName, int productPrice, int productStock) {
+        try {
+            InstrumentsException.checkProductName(productName);
+            instrumentsList.add(new VstPluginCatalog(productName, productPrice, productStock));
+            System.out.println(productName + "　の製品登録が完了しました");
+            System.out.println("--------------");
+        } catch (IllegalArgumentException error) {
+            System.out.println(error);
+            System.out.println("--------------");
+        }
+
     }
 
     //list内から指定したVstPluginインスタンスを削除する
-    public void deleteList(int i) {
-        list.remove(i);
-        System.out.println("リスト番号：" + i + "　の削除が完了しました");
-        System.out.println("----------------------------");
-    }
-
-    //list内のVstPluginインスタンスの製品名がnull又は空白であることを検出し、検出されればエラー結果を返す
-    public void chekedList() {
-        int count = 0;
-        for (VstPlugin item : this.list) {
-            try {
-                CustomException.checkValue(count, item.new GetterMethods().getValue1());
-            } catch (IllegalArgumentException e) {
-                System.out.println(e);
-                System.out.println("--------------");
-            }
-            count++;
-        }
+    public void deleteInstrumentList(int instrumentsListNumber) {
+        instrumentsList.remove(instrumentsListNumber);
+        System.out.println("リスト番号：" + instrumentsListNumber + "　の削除が完了しました");
         System.out.println("----------------------------");
     }
 
     //list内にあるすべてのインスタンスに格納されているデータを出力する
-    public void allPrintList() {
-        int count = 0;
-        for (VstPlugin item : list) {
-            System.out.println("リスト番号：" + count);
-            System.out.println("製品：" + item.new GetterMethods().getValue1());
-            System.out.println("価格：" + item.new GetterMethods().getValue2());
-            System.out.println("在庫：" + item.new GetterMethods().getValue3());
+    public void printAllInstrumentsInfo() {
+        int instrumentsListNumber = 0;
+        for (VstPluginCatalog item : instrumentsList) {
+            System.out.println("リスト番号：" + instrumentsListNumber);
+            System.out.println("製品：" + item.new ProductGetter().getProductName());
+            System.out.println("価格：" + item.new ProductGetter().getProductPrice());
+            System.out.println("在庫：" + item.new ProductGetter().getProductStock());
             System.out.println("--------------");
-            count++;
+            instrumentsListNumber++;
         }
         System.out.println("----------------------------");
     }
 
     //list内の指定したインスタンスのデータを変更する
-    public void updateList(int i, String value1, int value2, int value3) {
-        list.get(i).new SetterMethods().setValue1(value1);
-        list.get(i).new SetterMethods().setValue2(value2);
-        list.get(i).new SetterMethods().setValue3(value3);
-        System.out.println("リスト番号：" + i + "　の変更が完了しました");
+    public void updateInstrumentList(int instrumentsListNumber, String productName, int productPrice, int productStock) {
+        instrumentsList.get(instrumentsListNumber).new ProductSetter().setProductName(productName);
+        instrumentsList.get(instrumentsListNumber).new ProductSetter().setProductPrice(productPrice);
+        instrumentsList.get(instrumentsListNumber).new ProductSetter().setProductStock(productStock);
+        System.out.println("リスト番号：" + instrumentsListNumber + "　の変更が完了しました");
         System.out.println("----------------------------");
     }
 
     //list内の指定したインスタンスのデータを出力する
-    public void printList(int i) {
+    public void printInstrumentInfo(int i) {
         System.out.println("リスト番号：" + i);
-        System.out.println("製品：" + list.get(i).new GetterMethods().getValue1());
-        System.out.println("価格：" + list.get(i).new GetterMethods().getValue2());
-        System.out.println("在庫：" + list.get(i).new GetterMethods().getValue3());
+        System.out.println("製品：" + instrumentsList.get(i).new ProductGetter().getProductName());
+        System.out.println("価格：" + instrumentsList.get(i).new ProductGetter().getProductPrice());
+        System.out.println("在庫：" + instrumentsList.get(i).new ProductGetter().getProductStock());
         System.out.println("----------------------------");
     }
 
     //拡張forループを使用し、リスト化したインスタンスからkeyとデータリストを用意し、mapを作成する
-    public void createMap() {
-        for (VstPlugin item : list) {
-            drumMap.put(item.new GetterMethods().getValue1(), item.new GetterMethods().getList());
+    public void createInstrumentsMap() {
+        for (VstPluginCatalog item : instrumentsList) {
+            instrumentsMap.put(item.new ProductGetter().getProductName(), item.new ProductGetter().getProductList());
         }
     }
 
-    //引数のString型value1と一致するキーがあれば、その結果を出力する
-    //引数のString型value1と一致するキーがなければ、エラーを返す
-    public void printMap(String value1) {
-        System.out.println(value1 + "　の検索を開始します");
+    //引数のString型productNameと一致するキーがあれば、その結果を出力する
+    //引数のString型productNameと一致するキーがなければ、エラーを返す
+    public void searchInstrumentMap(String productName) {
+        System.out.println(productName + "　の検索を開始します");
         try {
-            CustomException.checkSearch(drumMap.get(value1));
-            System.out.println(value1 + "：[価格/在庫]" + drumMap.get(value1));
+            InstrumentsException.searchProductInfo(instrumentsMap.get(productName));
+            System.out.println(productName + "：[価格/在庫]" + instrumentsMap.get(productName));
         } catch (IllegalArgumentException e) {
             System.out.println(e);
         }
+        System.out.println("----------------------------");
+    }
+
+    //list内にあるすべてのインスタンスに格納されているデータを出力する
+    public void payInstruments() {
+        // PurchaceServiceのインスタンスを生成
+        PurchaceService purchaceService = new PayService();
+        // 依存性の注入
+        UserPay userPay = new UserPay(purchaceService);
+        // メッセージを送信
+        userPay.sendMessage("\n購入が完了しました");
         System.out.println("----------------------------");
     }
 }
